@@ -1,5 +1,5 @@
 import streamlit as st
-from snowflake.snowpark.context import get_active_session
+#from snowflake.snowpark.context import get_active_session
 
 # Set up the Streamlit app title and introduction
 st.title(":cup_with_straw: Customize Your Smoothie!")
@@ -10,7 +10,9 @@ st.write(
 )
 
 # Get the active Snowflake session
-session = get_active_session()
+#session = get_active_session()
+cnx = st.connection("snowflake")
+session = cnx.session()
 
 # Fetch only the relevant column from the Snowflake table
 my_dataframe = session.table("smoothies.public.fruit_options").select("FRUIT_NAME")
