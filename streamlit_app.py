@@ -55,3 +55,7 @@ if ingredients_list:
         except Exception as e:
             # Display the error if any occurs
             st.error(f"An error occurred: {str(e)}")
+
+import requests
+fruityvice_response = requests.get("https://fruityvice.com/api/fruit/watermelon")
+st.text(fruityvice_response)
