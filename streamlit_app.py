@@ -1,5 +1,8 @@
 import streamlit as st
 #from snowflake.snowpark.context import get_active_session
+from snowflake.snowpark.functions import col
+
+
 
 # Set up the Streamlit app title and introduction
 st.title(":cup_with_straw: Customize Your Smoothie!")
@@ -8,6 +11,13 @@ st.write(
     **Choose the fruits you want in your custom Smoothie!**
     """
 )
+###########
+name_on_order = st.text_input('Name on the Smoothie')
+#title = st.text_input("Movie title", "Life of Brian")
+st.write("Name on the Smoothie is", name_on_order)
+
+###########
+
 
 # Get the active Snowflake session
 #session = get_active_session()
@@ -39,11 +49,14 @@ if ingredients_list:
     for fruit_chosen in ingredients_list:
         ingredients_string += fruit_chosen + " "
     #st.write(ingredients_string)
-    my_insert_stmt = """ insert into smoothies.public.orders(ingredients)
-            values ('""" + ingredients_string + """')"""
+    my_insert_stmt = """ insert into smoothies.public.orders(ingredients,name_on_order)
+            values ('""" + ingredients_string + """','""" + name_on_order + """')"""
 
     #st.write(my_insert_stmt)
     time_to_insert = st.button('Submit Order')
+    if ingredients_string:
+        session.sql(my_insert_stmt).collect()
+        st.success('Your Smoothie is ordered '+ name_on_order+'!', icon="✅")
     if ingredients_string:
         session.sql(my_insert_stmt).collect()
         st.success('Your Smoothie is ordered!', icon="✅")
